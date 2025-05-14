@@ -1,8 +1,10 @@
 import java.io.IOException;
 import java.util.Scanner;
+import java.util.regex.Pattern;
 
 class WrongStudentName extends Exception {}
 class WrongAge extends Exception {}
+class WrongDateOfBirth extends Exception {}
 
 class Main {
     public static Scanner scan = new Scanner(System.in);
@@ -23,6 +25,8 @@ class Main {
                 System.out.println("Błędne imię studenta!");
             } catch(WrongAge e) {
                 System.out.println("Błędny wiek! Wiek musi być w przedziale 0-100.");
+            } catch(WrongDateOfBirth e) {
+                System.out.println("Błędna data urodzenia! Poprawny format: DD-MM-YYYY.");
             }
         }
     }
@@ -54,12 +58,16 @@ class Main {
         return age;
     }
 
-    public static String ReadDate() {
-        System.out.println("Podaj datę urodzenia (dowolny format):");
-        return scan.nextLine();
+    public static String ReadDate() throws WrongDateOfBirth {
+        System.out.println("Podaj datę urodzenia DD-MM-YYYY");
+        String date = scan.nextLine();
+        if (!Pattern.matches("\\d{2}-\\d{2}-\\d{4}", date)) {
+            throw new WrongDateOfBirth();
+        }
+        return date;
     }
 
-    public static void exercise1() throws IOException, WrongStudentName, WrongAge {
+    public static void exercise1() throws IOException, WrongStudentName, WrongAge, WrongDateOfBirth {
         var name = ReadName();
         var age = ReadAge();
         var date = ReadDate();
