@@ -10,24 +10,22 @@ class Main {
     public static Scanner scan = new Scanner(System.in);
 
     public static void main(String[] args) {
-        while(true) {
+        while (true) {
             try {
                 int ex = menu();
-                switch(ex) {
+                switch (ex) {
                     case 1: exercise1(); break;
                     case 2: exercise2(); break;
                     case 3: exercise3(); break;
                     case 0: return;
-                    default:
-                        System.out.println("Nieprawidłowa opcja. Spróbuj ponownie.");
                 }
-            } catch(IOException e) {
+            } catch (IOException e) {
                 System.out.println("Błąd I/O: " + e.getMessage());
-            } catch(WrongStudentName e) {
+            } catch (WrongStudentName e) {
                 System.out.println("Błędne imię studenta!");
-            } catch(WrongAge e) {
+            } catch (WrongAge e) {
                 System.out.println("Błędny wiek! Wiek musi być w przedziale 0-100.");
-            } catch(WrongDateOfBirth e) {
+            } catch (WrongDateOfBirth e) {
                 System.out.println("Błędna data urodzenia! Poprawny format: DD-MM-YYYY.");
             }
         }
@@ -44,7 +42,12 @@ class Main {
             String input = scan.nextLine();
 
             if (input.matches("\\d+")) {
-                return Integer.parseInt(input);
+                int choice = Integer.parseInt(input);
+                if (choice >= 0 && choice <= 3) {
+                    return choice;
+                } else {
+                    System.out.println("Proszę wybrać nr 0-3");
+                }
             } else {
                 System.out.println("Błąd: można używać tylko cyfr!");
             }
@@ -55,7 +58,7 @@ class Main {
         scan.nextLine();
         System.out.println("Podaj imię: ");
         String name = scan.nextLine();
-        if(name.contains(" "))
+        if (name.contains(" "))
             throw new WrongStudentName();
         return name;
     }
@@ -63,8 +66,8 @@ class Main {
     public static int ReadAge() throws WrongAge {
         System.out.println("Podaj wiek: ");
         int age = scan.nextInt();
-        scan.nextLine(); // dla konsumpcji końca linii
-        if(age < 0 || age > 100)
+        scan.nextLine(); // konsumpcja znaku końca linii
+        if (age < 0 || age > 100)
             throw new WrongAge();
         return age;
     }
@@ -87,7 +90,7 @@ class Main {
 
     public static void exercise2() throws IOException {
         var students = (new Service()).getStudents();
-        for(Student current : students) {
+        for (Student current : students) {
             System.out.println(current.ToString());
         }
     }
@@ -97,7 +100,7 @@ class Main {
         System.out.println("Podaj imię: ");
         var name = scan.nextLine();
         var wanted = (new Service()).findStudentByName(name);
-        if(wanted == null)
+        if (wanted == null)
             System.out.println("Nie znaleziono...");
         else {
             System.out.println("Znaleziono: ");
